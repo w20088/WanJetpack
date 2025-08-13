@@ -8,9 +8,8 @@ import androidx.paging.PagingState
 import androidx.paging.RemoteMediator
 import androidx.room.withTransaction
 import com.longjunhao.wanjetpack.api.WanJetpackApi
-import com.longjunhao.wanjetpack.data.ApiArticle
+import com.longjunhao.wanjetpack.data.Article
 import com.longjunhao.wanjetpack.data.AppDatabase
-import com.longjunhao.wanjetpack.data.RemoteKey
 import retrofit2.HttpException
 import java.io.IOException
 
@@ -34,10 +33,9 @@ private const val HOME_STARTING_PAGE_INDEX = 0
 @OptIn(ExperimentalPagingApi::class)
 class ArticleRemoteMediator(
     private val api: WanJetpackApi,
-    private val db: AppDatabase
-) : RemoteMediator<Int, ApiArticle>() {
-    private val articleDao = db.articleDao()
-    private val remoteKeyDao = db.remoteKeyDao()
+    private val database: AppDatabase
+) : RemoteMediator<Int, Article>() {
+    private val articleDao = database.articleDao()
 
     override suspend fun initialize(): InitializeAction {
         // Require that remote REFRESH is launched on initial load and succeeds before launching
@@ -47,46 +45,65 @@ class ArticleRemoteMediator(
 
     override suspend fun load(
         loadType: LoadType,
-        state: PagingState<Int, ApiArticle>
+        state: PagingState<Int, Article>
     ): MediatorResult {
         try {
-            Log.d(TAG, "load: 0 loadType=$loadType")
-            val pageKey = when (loadType) {
-                REFRESH -> null
-                PREPEND -> return MediatorResult.Success(endOfPaginationReached = true)
-                APPEND -> {
-                    val remoteKey = db.withTransaction {
-                        db.remoteKeyDao().remoteKeyByType(HOME_ARTICLE_REMOTE_TYPE)
+            // 计算要加载的页面
+            // API 请求参数 page 从 0 开始，但返回的 curPage 从 1 开始
+            val page = when (loadType) {
+                LoadType.REFRESH -> {
+                    val currentPage = state.anchorPosition?.let { position ->
+                        state.closestItemToPosition(position)?.let { article ->
+                            articleDao.getCurrentPageByArticleId(article.id)
+                        }
                     }
-                    if (remoteKey.nextKey == null) {
-                        return MediatorResult.Success(endOfPaginationReached = true)
+                    (currentPage ?: 1) - 1  // 转换为 API 请求的 0 基页码
+                }
+                LoadType.PREPEND -> return MediatorResult.Success(endOfPaginationReached = true)
+                LoadType.APPEND -> {
+                    val currentPage = state.pages.lastOrNull { it.data.isNotEmpty() }?.data?.lastOrNull()
+                        ?.let { article ->
+                            articleDao.getCurrentPageByArticleId(article.id)
+                        }
+                    if (currentPage == null) {
+                        // 如果无法获取当前页码，从第1页开始加载
+                        // 这通常发生在数据库为空或数据不完整的情况下
+                        Log.w(TAG, "Cannot get current page, starting from page 1")
+                        0  // API请求第0页，返回curPage=1
+                    } else {
+                        currentPage  // 加载下一页，API 请求参数 = currentPage
                     }
-                    Log.d(TAG, "load: 1 remoteKey=${remoteKey.nextKey}")
-                    remoteKey.nextKey
                 }
             }
 
-            val page = pageKey ?: HOME_STARTING_PAGE_INDEX
+            // 从网络获取数据
+            val response = api.getHomeArticle(page)
 
-            val data = api.getHomeArticle(page).data.datas
-            Log.d(TAG, "load: 2 pageKey=$pageKey  page=$page")
+            val articles = response.data.datas
+            val apiCurrentPage = response.data.curPage  // API 返回的页码（从 1 开始）
+            val endOfPaginationReached = response.data.over
 
-            db.withTransaction {
-                if (loadType == REFRESH) {
-                    articleDao.deleteArticle()
-                    remoteKeyDao.deleteRemoteKeys(HOME_ARTICLE_REMOTE_TYPE)
+            // 在数据库事务中处理数据
+            database.withTransaction {
+                if (loadType == LoadType.REFRESH) {
+                    // 刷新时清除所有数据
+                    articleDao.clearArticles()
                 }
-                articleDao.insertAll(data)
-                remoteKeyDao.insert(
-                    //RemoteKey(HOME_ARTICLE_REMOTE_TYPE, response.data.curPage)
-                    RemoteKey(HOME_ARTICLE_REMOTE_TYPE, page+1)
-                )
+
+                // 插入新数据，直接使用 API 返回的 curPage（已经是从 1 开始）
+                val articlesWithPage = articles.map { article ->
+                    article.copy(currentPage = apiCurrentPage)
+                }
+                articleDao.insertArticles(articlesWithPage)
             }
 
-            return MediatorResult.Success(endOfPaginationReached = data.isEmpty())
+            return MediatorResult.Success(endOfPaginationReached = endOfPaginationReached)
+
         } catch (e: IOException) {
+            Log.e(TAG, "Error loading data，IOException: ${e.message}")
             return MediatorResult.Error(e)
         } catch (e: HttpException) {
+            Log.e(TAG, "Error loading data， HttpException: ${e.message}")
             return MediatorResult.Error(e)
         }
     }

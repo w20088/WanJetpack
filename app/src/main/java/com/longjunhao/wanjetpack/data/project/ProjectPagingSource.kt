@@ -3,7 +3,7 @@ package com.longjunhao.wanjetpack.data.project
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.longjunhao.wanjetpack.api.WanJetpackApi
-import com.longjunhao.wanjetpack.data.ApiArticle
+import com.longjunhao.wanjetpack.data.Article
 
 /**
  * .ProjectPagingSource
@@ -17,9 +17,9 @@ private const val PROJECT_STARTING_PAGE_INDEX = 1
 class ProjectPagingSource(
     private val api: WanJetpackApi,
     private val query: Int
-) : PagingSource<Int, ApiArticle>() {
+) : PagingSource<Int, Article>() {
 
-    override suspend fun load(params: LoadParams<Int>): LoadResult<Int, ApiArticle> {
+    override suspend fun load(params: LoadParams<Int>): LoadResult<Int, Article> {
         val page = params.key ?: PROJECT_STARTING_PAGE_INDEX
         return try {
             val response = api.getProjectArticle(page, query)
@@ -34,7 +34,7 @@ class ProjectPagingSource(
         }
     }
 
-    override fun getRefreshKey(state: PagingState<Int, ApiArticle>): Int? {
+    override fun getRefreshKey(state: PagingState<Int, Article>): Int? {
        return null
     }
 }

@@ -6,7 +6,7 @@ import androidx.lifecycle.liveData
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
-import com.longjunhao.wanjetpack.data.ApiArticle
+import com.longjunhao.wanjetpack.data.Article
 import com.longjunhao.wanjetpack.data.ApiResponse
 import com.longjunhao.wanjetpack.data.WanJetpackRepository
 import com.longjunhao.wanjetpack.util.API_RESPONSE_NO_NET
@@ -33,10 +33,10 @@ class SearchViewModel @Inject constructor(
         MutableLiveData<String>()
     }
 
-    private var currentSearchResult: Flow<PagingData<ApiArticle>>? = null
+    private var currentSearchResult: Flow<PagingData<Article>>? = null
 
-    fun getSearchArticle(): Flow<PagingData<ApiArticle>> {
-        val newResult: Flow<PagingData<ApiArticle>> =
+    fun getSearchArticle(): Flow<PagingData<Article>> {
+        val newResult: Flow<PagingData<Article>> =
             repository.getSearchArticle(keyword.value ?: "").cachedIn(viewModelScope)
         currentSearchResult = newResult
         return newResult

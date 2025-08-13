@@ -19,7 +19,6 @@ package com.longjunhao.wanjetpack.di
 import android.content.Context
 import com.longjunhao.wanjetpack.data.AppDatabase
 import com.longjunhao.wanjetpack.data.ArticleDao
-import com.longjunhao.wanjetpack.data.RemoteKeyDao
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -40,10 +39,5 @@ class DatabaseModule {
     @Provides
     fun provideArticleDao(appDatabase: AppDatabase): ArticleDao {
         return appDatabase.articleDao()
-    }
-
-    @Provides
-    fun provideRemoteKeyDao(appDatabase: AppDatabase): RemoteKeyDao {
-        return appDatabase.remoteKeyDao()
     }
 }

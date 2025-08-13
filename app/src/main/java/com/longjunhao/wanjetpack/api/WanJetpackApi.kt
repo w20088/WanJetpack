@@ -1,7 +1,7 @@
 package com.longjunhao.wanjetpack.api
 
 import android.util.Log
-import com.longjunhao.wanjetpack.data.ApiArticle
+import com.longjunhao.wanjetpack.data.Article
 import com.longjunhao.wanjetpack.data.ApiPage
 import com.longjunhao.wanjetpack.data.ApiResponse
 import com.longjunhao.wanjetpack.data.home.ApiBanner
@@ -32,7 +32,7 @@ interface WanJetpackApi {
     @GET("/article/list/{page}/json")
     suspend fun getHomeArticle(
         @Path("page") page: Int
-    ): WanJetResponse<ApiPage<ApiArticle>>
+    ): WanJetResponse<ApiPage<Article>>
 
     /**
      * 获取问答列表
@@ -40,7 +40,7 @@ interface WanJetpackApi {
     @GET("/wenda/list/{page}/json")
     suspend fun getWenda(
         @Path("page") page: Int
-    ): WanJetResponse<ApiPage<ApiArticle>>
+    ): WanJetResponse<ApiPage<Article>>
 
     /**
      * 获取项目分类列表
@@ -55,7 +55,7 @@ interface WanJetpackApi {
     suspend fun getProjectArticle(
         @Path("page") page: Int,
         @Query("cid") cid: Int
-    ): WanJetResponse<ApiPage<ApiArticle>>
+    ): WanJetResponse<ApiPage<Article>>
 
     /**
      * 获取公众号列表
@@ -70,7 +70,7 @@ interface WanJetpackApi {
     suspend fun getWechatArticle(
         @Path("id") id: Int,
         @Path("page") page: Int
-    ): WanJetResponse<ApiPage<ApiArticle>>
+    ): WanJetResponse<ApiPage<Article>>
 
     /**
      * 登录
@@ -104,7 +104,7 @@ interface WanJetpackApi {
     @GET("lg/collect/list/{page}/json")
     suspend fun getCollection(
         @Path("page") page: Int
-    ): WanJetResponse<ApiPage<ApiArticle>>
+    ): WanJetResponse<ApiPage<Article>>
 
     /**
      * 收藏站内文章：
@@ -117,7 +117,7 @@ interface WanJetpackApi {
     @POST("lg/collect/{id}/json")
     suspend fun collect(
         @Path("id") id: Int
-    ): ApiResponse<ApiArticle>
+    ): ApiResponse<Article>
 
     /**
      * 文章列表 取消收藏：
@@ -129,7 +129,7 @@ interface WanJetpackApi {
     @POST("lg/uncollect_originId/{id}/json")
     suspend fun unCollect(
         @Path("id") id: Int
-    ): ApiResponse<ApiArticle>
+    ): ApiResponse<Article>
 
     /**
      * 我的收藏界面，取消收藏
@@ -140,7 +140,7 @@ interface WanJetpackApi {
     suspend fun unCollect(
         @Path("id") id: Int,
         @Field("originId") originId: Int = -1
-    ): ApiResponse<ApiArticle>
+    ): ApiResponse<Article>
 
     /**
      * Banner
@@ -155,7 +155,7 @@ interface WanJetpackApi {
     suspend fun search(
         @Path("page") page: Int,
         @Query("k") keyword: String
-    ): WanJetResponse<ApiPage<ApiArticle>>
+    ): WanJetResponse<ApiPage<Article>>
 
     companion object {
         private const val BASE_URL = "https://www.wanandroid.com/"

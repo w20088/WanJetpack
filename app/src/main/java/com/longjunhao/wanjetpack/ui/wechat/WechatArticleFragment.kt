@@ -14,7 +14,7 @@ import com.google.android.material.snackbar.Snackbar
 import com.longjunhao.wanjetpack.R
 import com.longjunhao.wanjetpack.adapter.FooterAdapter
 import com.longjunhao.wanjetpack.adapter.WechatAdapter
-import com.longjunhao.wanjetpack.data.ApiArticle
+import com.longjunhao.wanjetpack.data.Article
 import com.longjunhao.wanjetpack.databinding.FragmentWechatArticleBinding
 import com.longjunhao.wanjetpack.util.API_RESPONSE_NO_NET
 import com.longjunhao.wanjetpack.viewmodels.WechatArticleViewModel
@@ -88,7 +88,7 @@ class WechatArticleFragment : Fragment() {
             }
     }
 
-    private fun adapterFavoriteOnClick (article: ApiArticle, position: Int) {
+    private fun adapterFavoriteOnClick (article: Article, position: Int) {
         if (article.collect) {
             viewModel.unCollect(article.id).observe(viewLifecycleOwner, Observer {
                 if (it.errorCode == 0) {

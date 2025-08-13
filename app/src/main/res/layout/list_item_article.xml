@@ -6,11 +6,11 @@
         <import type="android.text.TextUtils" alias="textUtlis" />
         <variable
             name="article"
-            type="com.longjunhao.wanjetpack.data.ApiArticle" />
+            type="com.longjunhao.wanjetpack.data.Article" />
 
     </data>
 
-    <com.longjunhao.wanjetpack.views.MaskedCardView
+    <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/card_side_margin"
@@ -70,5 +70,5 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-    </com.longjunhao.wanjetpack.views.MaskedCardView>
+    </androidx.cardview.widget.CardView>
 </layout>

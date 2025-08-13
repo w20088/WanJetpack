@@ -15,7 +15,7 @@ import com.longjunhao.wanjetpack.R
 import com.longjunhao.wanjetpack.adapter.FooterAdapter
 import com.longjunhao.wanjetpack.adapter.ProjectAdapter
 import com.longjunhao.wanjetpack.adapter.ProjectCategoryAdapter
-import com.longjunhao.wanjetpack.data.ApiArticle
+import com.longjunhao.wanjetpack.data.Article
 import com.longjunhao.wanjetpack.data.project.ProjectCategory
 import com.longjunhao.wanjetpack.databinding.FragmentProjectBinding
 import com.longjunhao.wanjetpack.util.API_RESPONSE_NO_NET
@@ -99,7 +99,7 @@ class ProjectFragment : Fragment() {
         }
     }
 
-    private fun adapterFavoriteOnClick (article: ApiArticle, position: Int) {
+    private fun adapterFavoriteOnClick (article: Article, position: Int) {
         if (article.collect) {
             viewModel.unCollect(article.id).observe(viewLifecycleOwner, Observer {
                 if (it.errorCode == 0) {

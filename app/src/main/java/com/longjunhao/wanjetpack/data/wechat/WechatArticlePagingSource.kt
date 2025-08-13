@@ -3,7 +3,7 @@ package com.longjunhao.wanjetpack.data.wechat
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.longjunhao.wanjetpack.api.WanJetpackApi
-import com.longjunhao.wanjetpack.data.ApiArticle
+import com.longjunhao.wanjetpack.data.Article
 
 /**
  * .WechatArticlePagingSource
@@ -17,9 +17,9 @@ private const val WECHAT_STARTING_PAGE_INDEX = 1
 class WechatArticlePagingSource(
     private val api: WanJetpackApi,
     private val wechatId: Int
-) : PagingSource<Int,ApiArticle>() {
+) : PagingSource<Int,Article>() {
 
-    override suspend fun load(params: LoadParams<Int>): LoadResult<Int, ApiArticle> {
+    override suspend fun load(params: LoadParams<Int>): LoadResult<Int, Article> {
         val page = params.key ?: WECHAT_STARTING_PAGE_INDEX
         return try {
             val response = api.getWechatArticle(wechatId, page)
@@ -34,7 +34,7 @@ class WechatArticlePagingSource(
         }
     }
 
-    override fun getRefreshKey(state: PagingState<Int, ApiArticle>): Int? {
+    override fun getRefreshKey(state: PagingState<Int, Article>): Int? {
         return null
     }
 }

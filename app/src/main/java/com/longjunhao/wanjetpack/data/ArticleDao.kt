@@ -16,13 +16,21 @@ import androidx.room.Query
 @Dao
 interface ArticleDao {
 
+    @Query("SELECT * FROM articles ORDER BY publishTime DESC")
+    fun getArticles(): PagingSource<Int, Article>
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertAll(articles: List<ApiArticle>)
+    suspend fun insertArticles(articles: List<Article>)
 
-    //@Query("SELECT * FROM article")
-    @Query("SELECT * FROM article ORDER BY niceDate ASC")
-    fun getLocalArticle(): PagingSource<Int, ApiArticle>
+    @Query("DELETE FROM articles")
+    suspend fun clearArticles()
 
-    @Query("DELETE FROM article")
-    suspend fun deleteArticle()
+    @Query("SELECT * FROM articles WHERE id = :articleId")
+    suspend fun getArticleById(articleId: Int): Article?
+
+    @Query("SELECT COUNT(*) FROM articles")
+    suspend fun getArticleCount(): Int
+
+    @Query("SELECT currentPage FROM articles WHERE id = :articleId")
+    suspend fun getCurrentPageByArticleId(articleId: Int): Int?
 }

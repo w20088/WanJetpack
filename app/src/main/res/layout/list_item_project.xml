@@ -5,7 +5,7 @@
     <data>
         <variable
             name="project"
-            type="com.longjunhao.wanjetpack.data.ApiArticle" />
+            type="com.longjunhao.wanjetpack.data.Article" />
 
     </data>
 

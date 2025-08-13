@@ -3,7 +3,7 @@ package com.longjunhao.wanjetpack.viewmodels
 import androidx.lifecycle.*
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
-import com.longjunhao.wanjetpack.data.ApiArticle
+import com.longjunhao.wanjetpack.data.Article
 import com.longjunhao.wanjetpack.data.ApiResponse
 import com.longjunhao.wanjetpack.data.WanJetpackRepository
 import com.longjunhao.wanjetpack.util.API_RESPONSE_NO_NET
@@ -24,7 +24,7 @@ class ProjectViewModel @Inject constructor(
 ) : ViewModel() {
 
     private var currentQueryValue: Int? = null
-    private var currentSearchResult: Flow<PagingData<ApiArticle>>? = null
+    private var currentSearchResult: Flow<PagingData<Article>>? = null
 
     val projectCategory = liveData {
         try {
@@ -37,9 +37,9 @@ class ProjectViewModel @Inject constructor(
     /**
      * todo 期望用 currentSelectedItem.switchMap{}结合liveData{}或者flow{}实现
      */
-    fun getProjectArticle(categoryId: Int): Flow<PagingData<ApiArticle>> {
+    fun getProjectArticle(categoryId: Int): Flow<PagingData<Article>> {
         currentQueryValue = categoryId
-        val newResult: Flow<PagingData<ApiArticle>> =
+        val newResult: Flow<PagingData<Article>> =
             repository.getProjectArticle(categoryId).cachedIn(viewModelScope)
         currentSearchResult = newResult
         return newResult

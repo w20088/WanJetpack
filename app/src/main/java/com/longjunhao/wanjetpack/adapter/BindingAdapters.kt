@@ -28,7 +28,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.google.android.material.snackbar.Snackbar
 import com.longjunhao.wanjetpack.R
-import com.longjunhao.wanjetpack.data.ApiArticle
+import com.longjunhao.wanjetpack.data.Article
 import com.longjunhao.wanjetpack.data.home.ApiBanner
 
 @BindingAdapter("isGone")
@@ -54,7 +54,7 @@ fun bindImageFromUrl(view: ImageView, imageUrl: String?) {
 fun bindWebViewFromArticle(view: View, article: Any) {
     view.setOnClickListener {
         when (article) {
-            is ApiArticle -> {
+            is Article -> {
                 article.let {
                     val bundle = bundleOf("link" to it.link, "title" to it.title)
                     view.findNavController().navigate(R.id.webFragment, bundle)

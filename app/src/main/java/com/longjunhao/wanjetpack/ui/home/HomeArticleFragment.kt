@@ -16,7 +16,7 @@ import com.longjunhao.wanjetpack.R
 import com.longjunhao.wanjetpack.adapter.FooterAdapter
 import com.longjunhao.wanjetpack.adapter.HomeArticleAdapter
 import com.longjunhao.wanjetpack.adapter.HomeFirstAdapter
-import com.longjunhao.wanjetpack.data.ApiArticle
+import com.longjunhao.wanjetpack.data.Article
 import com.longjunhao.wanjetpack.data.home.ApiBanner
 import com.longjunhao.wanjetpack.databinding.FragmentHomeArticleBinding
 import com.longjunhao.wanjetpack.util.API_RESPONSE_NO_NET
@@ -122,7 +122,7 @@ class HomeArticleFragment : Fragment() {
      * todo： 现在不确定的是：布局里的数据官方建议传入data数据，即 ApiArticle；还是建议传入对应的ViewModel呢？
      *
      */
-    private fun adapterFavoriteOnClick (article: ApiArticle, position: Int) {
+    private fun adapterFavoriteOnClick (article: Article, position: Int) {
         Log.d("HomeArticleFragment", "adapterFavoriteOnClick: ljh article.title=${article.title}  position=$position")
         if (article.collect) {
             viewModel.unCollect(article.id).observe(viewLifecycleOwner, Observer {
