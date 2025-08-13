@@ -6,7 +6,7 @@ import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.longjunhao.wanjetpack.adapter.SearchAdapter.ArticleViewHolder
-import com.longjunhao.wanjetpack.data.ApiArticle
+import com.longjunhao.wanjetpack.data.Article
 import com.longjunhao.wanjetpack.databinding.ListItemSearchBinding
 
 /**
@@ -16,8 +16,8 @@ import com.longjunhao.wanjetpack.databinding.ListItemSearchBinding
  * @date 2021/06/21
  */
 class SearchAdapter(
-    private val favoriteOnClick: (ApiArticle, Int) -> Unit
-) : PagingDataAdapter<ApiArticle, ArticleViewHolder>(ArticleDiffCallback()) {
+    private val favoriteOnClick: (Article, Int) -> Unit
+) : PagingDataAdapter<Article, ArticleViewHolder>(ArticleDiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ArticleViewHolder {
         return ArticleViewHolder(
@@ -45,7 +45,7 @@ class SearchAdapter(
         val binding: ListItemSearchBinding
     ) : RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(item: ApiArticle) {
+        fun bind(item: Article) {
             binding.apply {
                 article = item
                 executePendingBindings()
@@ -54,12 +54,12 @@ class SearchAdapter(
 
     }
 
-    private class ArticleDiffCallback : DiffUtil.ItemCallback<ApiArticle>() {
-        override fun areItemsTheSame(oldItem: ApiArticle, newItem: ApiArticle): Boolean {
+    private class ArticleDiffCallback : DiffUtil.ItemCallback<Article>() {
+        override fun areItemsTheSame(oldItem: Article, newItem: Article): Boolean {
             return oldItem.id == newItem.id
         }
 
-        override fun areContentsTheSame(oldItem: ApiArticle, newItem: ApiArticle): Boolean {
+        override fun areContentsTheSame(oldItem: Article, newItem: Article): Boolean {
             return oldItem == newItem
         }
 

@@ -13,14 +13,13 @@ import androidx.room.RoomDatabase
  */
 
 @Database(
-    entities = [ApiArticle::class, RemoteKey::class],
+    entities = [Article::class],
     version = 1,
     exportSchema = false
 )
 abstract class AppDatabase : RoomDatabase() {
 
     abstract fun articleDao(): ArticleDao
-    abstract fun remoteKeyDao(): RemoteKeyDao
 
     companion object {
 

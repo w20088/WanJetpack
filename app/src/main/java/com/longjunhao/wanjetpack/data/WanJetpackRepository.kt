@@ -13,7 +13,9 @@ import com.longjunhao.wanjetpack.data.user.CollectionPagingSource
 import com.longjunhao.wanjetpack.data.user.User
 import com.longjunhao.wanjetpack.data.wechat.WechatArticlePagingSource
 import com.longjunhao.wanjetpack.data.wechat.WechatCategory
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flowOn
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -37,11 +39,8 @@ class WanJetpackRepository @Inject constructor(
         private const val SEARCH_ARTICLE_PAGE_SIZE = 20
     }
 
-    /**
-     * todo 由于RemoteMediator还有很多问题，暂时先注释掉，等发布正式版再来适配
-     */
-    //@OptIn(ExperimentalPagingApi::class)
-    fun getHomeArticle(): Flow<PagingData<ApiArticle>> {
+    @OptIn(ExperimentalPagingApi::class)
+    fun getHomeArticle(): Flow<PagingData<Article>> {
         return Pager(
             config = PagingConfig(
                 initialLoadSize = 10,
@@ -49,14 +48,14 @@ class WanJetpackRepository @Inject constructor(
                 enablePlaceholders = false,
                 pageSize = HOME_ARTICLE_PAGE_SIZE
             ),
-            pagingSourceFactory = { HomeArticlePagingSource(api) }
-            //remoteMediator = ArticleRemoteMediator(api, db)
-        ) /*{
-            db.articleDao().getLocalArticle()
-        }*/.flow
+            //pagingSourceFactory = { HomeArticlePagingSource(api) }
+            remoteMediator = ArticleRemoteMediator(api, db)
+        ) {
+            db.articleDao().getArticles()
+        }.flow.flowOn(Dispatchers.IO)
     }
 
-    fun getWenda(): Flow<PagingData<ApiArticle>> {
+    fun getWenda(): Flow<PagingData<Article>> {
         return Pager(
             config = PagingConfig(
                 prefetchDistance = 5,
@@ -71,7 +70,7 @@ class WanJetpackRepository @Inject constructor(
         return api.getProjectCategory()
     }
 
-    fun getProjectArticle(categoryId: Int): Flow<PagingData<ApiArticle>> {
+    fun getProjectArticle(categoryId: Int): Flow<PagingData<Article>> {
         return Pager(
             config = PagingConfig(
                 prefetchDistance = 5,
@@ -86,7 +85,7 @@ class WanJetpackRepository @Inject constructor(
         return api.getWechatName()
     }
 
-    fun getWechatArticle(wechatId: Int): Flow<PagingData<ApiArticle>> {
+    fun getWechatArticle(wechatId: Int): Flow<PagingData<Article>> {
         return Pager(
             config = PagingConfig(
                 prefetchDistance = 5,
@@ -110,7 +109,7 @@ class WanJetpackRepository @Inject constructor(
         return api.logout()
     }
 
-    fun getCollectionArticle(): Flow<PagingData<ApiArticle>> {
+    fun getCollectionArticle(): Flow<PagingData<Article>> {
         return Pager(
             config = PagingConfig(
                 prefetchDistance = 5,
@@ -121,19 +120,19 @@ class WanJetpackRepository @Inject constructor(
         ).flow
     }
 
-    suspend fun collect(id: Int): ApiResponse<ApiArticle> {
+    suspend fun collect(id: Int): ApiResponse<Article> {
         return api.collect(id)
     }
 
-    suspend fun unCollect(id: Int): ApiResponse<ApiArticle> {
+    suspend fun unCollect(id: Int): ApiResponse<Article> {
         return api.unCollect(id)
     }
 
-    suspend fun unCollect(id: Int, originId: Int): ApiResponse<ApiArticle> {
+    suspend fun unCollect(id: Int, originId: Int): ApiResponse<Article> {
         return api.unCollect(id, originId)
     }
 
-    fun getSearchArticle(keyword: String): Flow<PagingData<ApiArticle>> {
+    fun getSearchArticle(keyword: String): Flow<PagingData<Article>> {
         return Pager(
             config = PagingConfig(
                 prefetchDistance = 5,

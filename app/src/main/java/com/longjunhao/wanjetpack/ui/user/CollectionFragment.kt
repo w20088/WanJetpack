@@ -13,7 +13,7 @@ import com.google.android.material.snackbar.Snackbar
 import com.longjunhao.wanjetpack.R
 import com.longjunhao.wanjetpack.adapter.CollectionArticleAdapter
 import com.longjunhao.wanjetpack.adapter.FooterAdapter
-import com.longjunhao.wanjetpack.data.ApiArticle
+import com.longjunhao.wanjetpack.data.Article
 import com.longjunhao.wanjetpack.databinding.FragmentCollectionBinding
 import com.longjunhao.wanjetpack.util.API_RESPONSE_LOGIN_INVALID
 import com.longjunhao.wanjetpack.util.API_RESPONSE_NO_NET
@@ -79,7 +79,7 @@ class CollectionFragment : Fragment() {
      * todo 期望调用notifyItemRemoved即可，但是如果只调用notifyItemRemoved的话，再刷新显示会有异常。
      *   暂时规避方案为：不用notifyItemRemoved，直接调用adapter.refresh()删除成功后刷新界面（再次网络请求）
      */
-    private fun unCollect(article: ApiArticle, position: Int) {
+    private fun unCollect(article: Article, position: Int) {
         viewModel.unCollect(article.id, article.originId).observe(viewLifecycleOwner, {
             val snackMessage = when (it.errorCode) {
                 API_RESPONSE_SUCCESS -> {

@@ -5,7 +5,7 @@ import androidx.lifecycle.liveData
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
-import com.longjunhao.wanjetpack.data.ApiArticle
+import com.longjunhao.wanjetpack.data.Article
 import com.longjunhao.wanjetpack.data.ApiResponse
 import com.longjunhao.wanjetpack.data.WanJetpackRepository
 import com.longjunhao.wanjetpack.util.API_RESPONSE_NO_NET
@@ -24,10 +24,10 @@ import javax.inject.Inject
 class CollectionViewModel @Inject constructor(
     private val repository: WanJetpackRepository
 ) : ViewModel() {
-    private var currentCollectionArticleResult: Flow<PagingData<ApiArticle>>? = null
+    private var currentCollectionArticleResult: Flow<PagingData<Article>>? = null
 
-    fun getCollectionArticle(): Flow<PagingData<ApiArticle>> {
-        val newResult: Flow<PagingData<ApiArticle>> =
+    fun getCollectionArticle(): Flow<PagingData<Article>> {
+        val newResult: Flow<PagingData<Article>> =
             repository.getCollectionArticle().cachedIn(viewModelScope)
         currentCollectionArticleResult = newResult
         return newResult

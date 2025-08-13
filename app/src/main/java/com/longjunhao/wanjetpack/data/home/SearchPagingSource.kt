@@ -3,7 +3,7 @@ package com.longjunhao.wanjetpack.data.home
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.longjunhao.wanjetpack.api.WanJetpackApi
-import com.longjunhao.wanjetpack.data.ApiArticle
+import com.longjunhao.wanjetpack.data.Article
 
 /**
  * .WendaPagingSource
@@ -17,8 +17,8 @@ private const val SEARCH_STARTING_PAGE_INDEX = 0
 class SearchPagingSource(
     private val api: WanJetpackApi,
     private val keyword: String
-) : PagingSource<Int, ApiArticle>() {
-    override suspend fun load(params: LoadParams<Int>): LoadResult<Int, ApiArticle> {
+) : PagingSource<Int, Article>() {
+    override suspend fun load(params: LoadParams<Int>): LoadResult<Int, Article> {
         val page = params.key ?: SEARCH_STARTING_PAGE_INDEX
         return try {
             val response = api.search(page, keyword)
@@ -33,7 +33,7 @@ class SearchPagingSource(
         }
     }
 
-    override fun getRefreshKey(state: PagingState<Int, ApiArticle>): Int? {
+    override fun getRefreshKey(state: PagingState<Int, Article>): Int? {
         return null
     }
 }

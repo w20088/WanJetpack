@@ -6,7 +6,7 @@
         <import type="android.text.TextUtils" alias="textUtlis" />
         <variable
             name="article"
-            type="com.longjunhao.wanjetpack.data.ApiArticle" />
+            type="com.longjunhao.wanjetpack.data.Article" />
 
     </data>
 
