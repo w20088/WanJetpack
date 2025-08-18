@@ -11,6 +11,7 @@ import com.longjunhao.wanjetpack.R
 import com.longjunhao.wanjetpack.data.home.ApiBanner
 import com.longjunhao.wanjetpack.databinding.ListItemFirstBinding
 import com.longjunhao.wanjetpack.views.NestedFrameLayout
+import androidx.constraintlayout.widget.ConstraintLayout
 
 /**
  * .HomeBannerAdapter
@@ -57,7 +58,9 @@ class HomeFirstAdapter: RecyclerView.Adapter<HomeFirstAdapter.FirstViewHolder>()
     fun autoScrollBannerPage() {
         if (this::viewHolder.isInitialized) {
             viewHolder.binding.bannerViewPager.run {
-                val isAutoScroll = !((parent as NestedFrameLayout).isTouched)
+                // 修复类型转换错误：现在ViewPager2的父级是ConstraintLayout，需要向上查找NestedFrameLayout
+                val touchDetector = (parent as? ConstraintLayout)?.parent as? NestedFrameLayout
+                val isAutoScroll = touchDetector?.let { !it.isTouched } ?: true
                 Log.d("HomeFirstAdapter", "autoScrollBannerPage: ljh isAutoScroll=$isAutoScroll")
                 if (isAutoScroll) {
                     setCurrentItem(currentItem + 1, true)

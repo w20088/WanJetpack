@@ -19,4 +19,15 @@
     <string name="un_collect_success">已成功取消收藏</string>
     <string name="login_invalid">登录失效，请重新登录</string>
     <string name="unknown_bug">未知的场景，请提bug</string>
+    
+    <!-- 空状态和错误状态 -->
+    <string name="empty_state_title">暂无内容</string>
+    <string name="empty_state_description">暂时没有找到相关文章，请稍后再试</string>
+    <string name="error_state_title">加载失败</string>
+    <string name="error_state_description">网络连接异常，请检查网络后重试</string>
+    <string name="retry">重试</string>
+    
+    <!-- 收藏相关 -->
+    <string name="collect_article">收藏文章</string>
+    <string name="uncollect_article">取消收藏</string>
 </resources>

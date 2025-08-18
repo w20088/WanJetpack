@@ -7,7 +7,6 @@
         <variable
             name="article"
             type="com.longjunhao.wanjetpack.data.Article" />
-
     </data>
 
     <androidx.cardview.widget.CardView
@@ -18,55 +17,71 @@
         android:layout_marginBottom="@dimen/card_bottom_margin"
         app:webViewFromArticle="@{article}"
         app:cardElevation="@dimen/card_elevation"
-        app:cardPreventCornerOverlap="false">
+        app:cardCornerRadius="@dimen/card_corner_radius"
+        app:cardPreventCornerOverlap="false"
+        app:cardBackgroundColor="?attr/colorSurface">
 
+        <!-- 使用ConstraintLayout减少嵌套，优化布局层次 -->
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="4dp">
+            android:padding="16dp">
 
-            <com.google.android.material.imageview.ShapeableImageView
-                android:id="@+id/favorite"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@{article.collect ? @drawable/ic_favorite_24 : @drawable/ic_favorite_border_24}"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintEnd_toEndOf="parent" />
-
+            <!-- 文章标题 -->
             <TextView
                 android:id="@+id/article_title"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:scaleType="centerCrop"
                 android:text="@{article.title}"
-                android:textAppearance="?attr/textAppearanceListItem"
+                android:textAppearance="?attr/textAppearanceSubtitle1"
+                android:textColor="?android:attr/textColorPrimary"
+                android:maxLines="3"
+                android:ellipsize="end"
+                android:lineSpacingExtra="2dp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toStartOf="@id/favorite"
-                app:layout_constraintTop_toTopOf="parent"/>
+                app:layout_constraintTop_toTopOf="parent" />
 
+            <!-- 收藏按钮 -->
+            <ImageButton
+                android:id="@+id/favorite"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:src="@{article.collect ? @drawable/ic_favorite_24 : @drawable/ic_favorite_border_24}"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:contentDescription="@{article.collect ? @string/uncollect_article : @string/collect_article}"
+                android:clickable="true"
+                android:focusable="true"
+                android:tint="?attr/colorPrimary"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" />
+
+            <!-- 作者信息 -->
             <TextView
                 android:id="@+id/project_author"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="12dp"
                 android:text="@{!textUtlis.isEmpty(article.author) ? article.author : article.shareUser}"
-                android:textAppearance="?attr/textAppearanceListItemSecondary"
-                android:textColor="@android:color/secondary_text_dark"
-                android:gravity="center_horizontal"
-                app:layout_constraintStart_toStartOf="@id/article_title"
-                app:layout_constraintTop_toBottomOf="@id/article_title"
-                app:layout_constraintBottom_toBottomOf="parent"/>
+                android:textAppearance="?attr/textAppearanceCaption"
+                android:textColor="?android:attr/textColorSecondary"
+                android:maxLines="1"
+                android:ellipsize="end"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/article_date"
+                app:layout_constraintTop_toBottomOf="@id/article_title" />
 
+            <!-- 发布时间 -->
             <TextView
                 android:id="@+id/article_date"
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@{@string/item_niceDate(article.niceDate)}"
-                android:textAppearance="?attr/textAppearanceListItemSecondary"
-                android:textColor="@android:color/secondary_text_dark"
-                android:gravity="center_horizontal"
+                android:textAppearance="?attr/textAppearanceCaption"
+                android:textColor="?android:attr/textColorSecondary"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="@id/project_author"/>
+                app:layout_constraintTop_toTopOf="@id/project_author"
+                app:layout_constraintBottom_toBottomOf="@id/project_author" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

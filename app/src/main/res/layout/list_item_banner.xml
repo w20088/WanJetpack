@@ -7,41 +7,57 @@
         <variable
             name="banner"
             type="com.longjunhao.wanjetpack.data.home.ApiBanner" />
-
     </data>
 
+    <!-- 使用ConstraintLayout减少嵌套层次 -->
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:clickable="true"
+        android:focusable="true">
 
+        <!-- Banner图片 -->
         <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/banner_image"
             android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:scaleType="fitXY"
+            android:layout_height="0dp"
+            android:scaleType="centerCrop"
             app:imageFromUrl="@{banner.imagePath}"
             app:webViewFromArticle="@{banner}"
             app:shapeAppearanceOverlay="@style/roundedCornerImageStyle"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"/>
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
 
-        <com.google.android.material.textview.MaterialTextView
+        <!-- 标题背景渐变 -->
+        <View
+            android:id="@+id/title_background"
+            android:layout_width="0dp"
+            android:layout_height="60dp"
+            android:background="@drawable/banner_title_gradient"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <!-- Banner标题 -->
+        <TextView
             android:id="@+id/banner_title"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
-            android:layout_marginEnd="20dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="12dp"
             android:text="@{banner.title}"
-            android:textAppearance="?attr/textAppearanceListItem"
-            android:gravity="start"
-            android:singleLine="true"
+            android:textAppearance="?attr/textAppearanceSubtitle1"
+            android:textColor="@android:color/white"
+            android:maxLines="2"
             android:ellipsize="end"
-            android:textColor="?attr/colorPrimary"
-            app:layout_constraintEnd_toEndOf="parent"
+            android:lineSpacingExtra="2dp"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintBottom_toBottomOf="@id/banner_image"/>
+            app:layout_constraintEnd_toEndOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

@@ -98,6 +98,17 @@ Floats：
         <item name="android:textColor">?attr/colorOnSurface</item>
     </style>
 
+    <!-- 自定义按钮样式 -->
+    <style name="Widget.WanJetpack.Button.IconButton" parent="Widget.MaterialComponents.Button.OutlinedButton">
+        <item name="android:minWidth">48dp</item>
+        <item name="android:minHeight">48dp</item>
+        <item name="android:padding">12dp</item>
+        <item name="android:text">""</item>
+        <item name="android:textSize">0sp</item>
+        <item name="strokeWidth">0dp</item>
+        <item name="cornerRadius">24dp</item>
+    </style>
+
     <style name="roundedCornerImageStyle">
         <item name="cornerFamily">rounded</item>
         <item name="cornerSize">10dp</item>

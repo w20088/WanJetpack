@@ -36,7 +36,8 @@ class HomeViewPagerFragment : Fragment() {
             tab.text = getTabTitle(position)
         }.attach()
 
-        (activity as AppCompatActivity).setSupportActionBar(binding.toolbar)
+        // 移除对toolbar的引用，因为我们已经简化了布局
+        // (activity as AppCompatActivity).setSupportActionBar(binding.toolbar)
 
         binding.search.setOnClickListener {
             findNavController().navigate(R.id.action_homeViewPagerFragment_to_searchFragment)

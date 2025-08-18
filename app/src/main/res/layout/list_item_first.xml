@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <com.longjunhao.wanjetpack.views.NestedFrameLayout
         android:id="@+id/nested_layout"
@@ -9,18 +10,34 @@
         android:layout_marginEnd="@dimen/card_side_margin"
         android:layout_marginBottom="12dp">
 
-        <androidx.viewpager2.widget.ViewPager2
-            android:id="@+id/banner_view_pager"
+        <!-- 使用ConstraintLayout优化布局层次 -->
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="220dp" />
+            android:layout_height="wrap_content">
 
-        <LinearLayout
-            android:id="@+id/indicator_layout"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginBottom="8dp"
-            android:layout_gravity="center|bottom"/>
+            <androidx.viewpager2.widget.ViewPager2
+                android:id="@+id/banner_view_pager"
+                android:layout_width="match_parent"
+                android:layout_height="220dp"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" />
+
+            <!-- 指示器容器 -->
+            <LinearLayout
+                android:id="@+id/indicator_layout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginBottom="8dp"
+                android:background="@drawable/indicator_background"
+                android:padding="4dp"
+                app:layout_constraintBottom_toBottomOf="@id/banner_view_pager"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
     </com.longjunhao.wanjetpack.views.NestedFrameLayout>
 
 </layout>

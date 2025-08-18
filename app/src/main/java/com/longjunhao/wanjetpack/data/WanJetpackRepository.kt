@@ -48,10 +48,10 @@ class WanJetpackRepository @Inject constructor(
                 enablePlaceholders = false,
                 pageSize = HOME_ARTICLE_PAGE_SIZE
             ),
-            //pagingSourceFactory = { HomeArticlePagingSource(api) }
             remoteMediator = ArticleRemoteMediator(api, db)
         ) {
             db.articleDao().getArticles()
+            //HomeArticlePagingSource(api)
         }.flow.flowOn(Dispatchers.IO)
     }
 

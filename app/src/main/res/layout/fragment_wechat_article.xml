@@ -24,7 +24,7 @@
                 android:clipToPadding="false"
                 android:overScrollMode="never"
                 android:paddingTop="@dimen/header_margin"
-                app:layoutManager="androidx.recyclerview.widget.StaggeredGridLayoutManager"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 app:spanCount="1"
                 tools:listitem="@layout/list_item_wechat"/>
 
